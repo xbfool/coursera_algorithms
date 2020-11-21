@@ -14,7 +14,6 @@ public class Percolation {
     private enum SiteState {
         eClose,
         eOpen,
-        eFull
     }
 
     // creates n-by-n grid, with all sites initially blocked
@@ -28,14 +27,14 @@ public class Percolation {
         uf = new WeightedQuickUnionUF(n * n + 2);
         start = n * n;
         end = n * n + 1;
-        data[start] = SiteState.eFull;
+        data[start] = SiteState.eOpen;
         data[end] = SiteState.eOpen;
     }
 
     // opens the site (row, col) if it is not open already
     public void open(int row, int col) {
         if (row <= 0 || row > size || col <= 0 || col > size) {
-            System.out.println("row: " + row + " col: " + col);
+            //System.out.println("row: " + row + " col: " + col);
             throw new IllegalArgumentException();
         }
         int index = (row - 1) * size + col - 1;
@@ -67,7 +66,7 @@ public class Percolation {
     // is the site (row, col) open?
     public boolean isOpen(int row, int col) {
         if (row <= 0 || row > size || col <= 0 || col > size) {
-            System.out.println("row: " + row + " col: " + col);
+            //System.out.println("row: " + row + " col: " + col);
             throw new IllegalArgumentException();
         }
         return data[(row - 1) * size + col - 1] != SiteState.eClose;
@@ -76,10 +75,10 @@ public class Percolation {
     // is the site (row, col) full?
     public boolean isFull(int row, int col) {
         if (row <= 0 || row > size || col <= 0 || col > size) {
-            System.out.println("row: " + row + " col: " + col);
+            //System.out.println("row: " + row + " col: " + col);
             throw new IllegalArgumentException();
         }
-        return data[(row - 1) * size + col - 1] == SiteState.eFull;
+        return uf.find((row - 1) * size + col - 1) == uf.find(end);
     }
 
     // returns the number of open sites
@@ -89,19 +88,20 @@ public class Percolation {
 
     // does the system percolate?
     public boolean percolates() {
-        return uf.connected(start, end);
+        return uf.find(start) == uf.find(end);
     }
+
+    private SiteState[] data;
+    private int numberOfOpen;
+    private final int size;
+    private final int start;
+    private final int end;
+    private final WeightedQuickUnionUF uf;
 
     // test client (optional)
     public static void main(String[] args) {
 
     }
 
-    private SiteState[] data;
-    private int numberOfOpen;
-    private int size;
-    private int start;
-    private int end;
-    private WeightedQuickUnionUF uf;
 
 }

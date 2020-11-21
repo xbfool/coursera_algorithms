@@ -99,7 +99,7 @@ public class Percolation {
 
     // test client (optional)
     public static void main(String[] args) {
-        //empty
+        // empty
     }
 
     private int index(int row, int col) {

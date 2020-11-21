@@ -56,7 +56,7 @@ public class PercolationStats {
     public double confidenceLo() {
         double m = mean();
         double s = stddev();
-        double r = m - CONFIDENCE_95 * s / trailResults.length;
+        double r = m - CONFIDENCE_95 * s / Math.sqrt(trailResults.length);
         return r;
     }
 
@@ -64,7 +64,7 @@ public class PercolationStats {
     public double confidenceHi() {
         double m = mean();
         double s = stddev();
-        double r = m + CONFIDENCE_95 * s / trailResults.length;
+        double r = m + CONFIDENCE_95 * s / Math.sqrt(trailResults.length);
         return r;
     }
 

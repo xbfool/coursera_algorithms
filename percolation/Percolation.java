@@ -17,6 +17,7 @@ public class Percolation {
     private final int start;
     private final int end;
     private final WeightedQuickUnionUF uf;
+    private final WeightedQuickUnionUF uf1;
 
     private enum SiteState {
         eClose,
@@ -35,6 +36,7 @@ public class Percolation {
         }
         numberOfOpen = 0;
         uf = new WeightedQuickUnionUF(n * n + 2);
+        uf1 = new WeightedQuickUnionUF(n * n + 2);
         start = n * n;
         end = n * n + 1;
         data[start] = SiteState.eOpen;
@@ -49,21 +51,26 @@ public class Percolation {
             numberOfOpen++;
             if (row == 1) {
                 uf.union(i, start);
+                uf1.union(i, start);
             }
             if (row == size) {
                 uf.union(i, end);
             }
             if (row > 1 && isOpen(row - 1, col)) {
                 uf.union(i, i - size);
+                uf1.union(i, i - size);
             }
             if (row < size && isOpen(row + 1, col)) {
                 uf.union(i, i + size);
+                uf1.union(i, i + size);
             }
             if (col > 1 && isOpen(row, col - 1)) {
                 uf.union(i, i - 1);
+                uf1.union(i, i - 1);
             }
             if (col < size && isOpen(row, col + 1)) {
                 uf.union(i, i + 1);
+                uf1.union(i, i + 1);
             }
 
         }
@@ -76,7 +83,7 @@ public class Percolation {
 
     // is the site (row, col) full?
     public boolean isFull(int row, int col) {
-        return uf.find(index(row, col)) == uf.find(start);
+        return uf1.find(index(row, col)) == uf1.find(start);
     }
 
     // returns the number of open sites

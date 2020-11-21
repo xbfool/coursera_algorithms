@@ -11,7 +11,7 @@
 import edu.princeton.cs.algs4.WeightedQuickUnionUF;
 
 public class Percolation {
-    private SiteState[] data;
+    private boolean[] data;
     private int numberOfOpen;
     private final int size;
     private final int start;
@@ -30,24 +30,24 @@ public class Percolation {
             throw new IllegalArgumentException();
         }
         size = n;
-        data = new SiteState[n * n + 2];
+        data = new boolean[n * n + 2];
         for (int i = 0; i < n * n + 2; i++) {
-            data[i] = SiteState.eClose;
+            data[i] = false;
         }
         numberOfOpen = 0;
         uf = new WeightedQuickUnionUF(n * n + 2);
         uf1 = new WeightedQuickUnionUF(n * n + 2);
         start = n * n;
         end = n * n + 1;
-        data[start] = SiteState.eOpen;
-        data[end] = SiteState.eOpen;
+        data[start] = true;
+        data[end] = true;
     }
 
     // opens the site (row, col) if it is not open already
     public void open(int row, int col) {
         int i = index(row, col);
-        if (data[i] == SiteState.eClose) {
-            data[i] = SiteState.eOpen;
+        if (data[i] == false) {
+            data[i] = true;
             numberOfOpen++;
             if (row == 1) {
                 uf.union(i, start);
@@ -78,7 +78,7 @@ public class Percolation {
 
     // is the site (row, col) open?
     public boolean isOpen(int row, int col) {
-        return data[index(row, col)] != SiteState.eClose;
+        return data[index(row, col)] != false;
     }
 
     // is the site (row, col) full?

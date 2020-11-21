@@ -13,8 +13,8 @@ import edu.princeton.cs.algs4.StdRandom;
 import edu.princeton.cs.algs4.StdStats;
 
 public class PercolationStats {
-    private double[] trailResults;
-    private final double CONFIDENCE_95 = 1.96;
+    private static final double confidence95 = 1.96;
+    private final double[] trailResults;
 
     // perform independent trials on an n-by-n grid
     public PercolationStats(int n, int trials) {
@@ -55,7 +55,7 @@ public class PercolationStats {
     public double confidenceLo() {
         double m = mean();
         double s = stddev();
-        double r = m - CONFIDENCE_95 * s / trailResults.length;
+        double r = m - confidence95 * s / trailResults.length;
         return r;
     }
 
@@ -63,7 +63,7 @@ public class PercolationStats {
     public double confidenceHi() {
         double m = mean();
         double s = stddev();
-        double r = m + CONFIDENCE_95 * s / trailResults.length;
+        double r = m + confidence95 * s / trailResults.length;
         return r;
     }
 

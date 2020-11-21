@@ -11,6 +11,13 @@
 import edu.princeton.cs.algs4.WeightedQuickUnionUF;
 
 public class Percolation {
+    private SiteState[] data;
+    private int numberOfOpen;
+    private final int size;
+    private final int start;
+    private final int end;
+    private final WeightedQuickUnionUF uf;
+
     private enum SiteState {
         eClose,
         eOpen,
@@ -18,6 +25,9 @@ public class Percolation {
 
     // creates n-by-n grid, with all sites initially blocked
     public Percolation(int n) {
+        if (n <= 0) {
+            throw new IllegalArgumentException();
+        }
         size = n;
         data = new SiteState[n * n + 2];
         for (int i = 0; i < n * n + 2; i++) {
@@ -33,31 +43,27 @@ public class Percolation {
 
     // opens the site (row, col) if it is not open already
     public void open(int row, int col) {
-        if (row <= 0 || row > size || col <= 0 || col > size) {
-            //System.out.println("row: " + row + " col: " + col);
-            throw new IllegalArgumentException();
-        }
-        int index = (row - 1) * size + col - 1;
-        if (data[index] == SiteState.eClose) {
-            data[index] = SiteState.eOpen;
+        int i = index(row, col);
+        if (data[i] == SiteState.eClose) {
+            data[i] = SiteState.eOpen;
             numberOfOpen++;
             if (row == 1) {
-                uf.union(index, start);
+                uf.union(i, start);
             }
             if (row == size) {
-                uf.union(index, end);
+                uf.union(i, end);
             }
             if (row > 1 && isOpen(row - 1, col)) {
-                uf.union(index, index - size);
+                uf.union(i, i - size);
             }
             if (row < size && isOpen(row + 1, col)) {
-                uf.union(index, index + size);
+                uf.union(i, i + size);
             }
             if (col > 1 && isOpen(row, col - 1)) {
-                uf.union(index, index - 1);
+                uf.union(i, i - 1);
             }
             if (col < size && isOpen(row, col + 1)) {
-                uf.union(index, index + 1);
+                uf.union(i, i + 1);
             }
 
         }
@@ -65,20 +71,12 @@ public class Percolation {
 
     // is the site (row, col) open?
     public boolean isOpen(int row, int col) {
-        if (row <= 0 || row > size || col <= 0 || col > size) {
-            //System.out.println("row: " + row + " col: " + col);
-            throw new IllegalArgumentException();
-        }
-        return data[(row - 1) * size + col - 1] != SiteState.eClose;
+        return data[index(row, col)] != SiteState.eClose;
     }
 
     // is the site (row, col) full?
     public boolean isFull(int row, int col) {
-        if (row <= 0 || row > size || col <= 0 || col > size) {
-            //System.out.println("row: " + row + " col: " + col);
-            throw new IllegalArgumentException();
-        }
-        return uf.find((row - 1) * size + col - 1) == uf.find(end);
+        return uf.find(index(row, col)) == uf.find(start);
     }
 
     // returns the number of open sites
@@ -91,16 +89,17 @@ public class Percolation {
         return uf.find(start) == uf.find(end);
     }
 
-    private SiteState[] data;
-    private int numberOfOpen;
-    private final int size;
-    private final int start;
-    private final int end;
-    private final WeightedQuickUnionUF uf;
 
     // test client (optional)
     public static void main(String[] args) {
+        //empty
+    }
 
+    private int index(int row, int col) {
+        if (row <= 0 || row > size || col <= 0 || col > size) {
+            throw new IllegalArgumentException();
+        }
+        return (row - 1) * size + col - 1;
     }
 
 

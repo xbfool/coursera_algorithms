@@ -44,6 +44,9 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 
     // remove and return a random item
     public Item dequeue() {
+        if (size == 0) {
+            throw new NoSuchElementException();
+        }
         int n = StdRandom.uniform(size);
         Item temp = items[n];
         items[n] = items[size-1];
@@ -62,6 +65,9 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 
     // return a random item (but do not remove it)
     public Item sample() {
+        if (size == 0) {
+            throw new NoSuchElementException();
+        }
         int n = StdRandom.uniform(size);
         return items[n];
     }
@@ -75,9 +81,11 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
     public static void main(String[] args) {
         System.out.println("hello Randomized Queue");
         RandomizedQueue<Integer> rq = new RandomizedQueue<Integer>();
-        rq.isEmpty();
-        rq.enqueue(33);
-        int i = rq.dequeue();
+        rq.enqueue(44);
+        rq.enqueue(19);
+        Iterator<Integer> i = rq.iterator()    ;
+        int a = i.next();
+        int b= i.next();
         System.out.println("hello Randomized Queue");
     }
 
@@ -88,8 +96,11 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 
         // initialize pointer to head of the list for iteration
         public RandomizeIterator(T[] items, int size) {
-            this.items = items.clone();
-            StdRandom.shuffle(items);
+            this.items = (T[])new Object[size];
+            for (int i = 0; i < size; i++) {
+                this.items[i] = items[i];
+            }
+            StdRandom.shuffle(this.items);
             this.size = size;
             current = 0;
         }

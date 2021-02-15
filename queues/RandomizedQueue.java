@@ -34,7 +34,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
     public void enqueue(Item item) {
         if (size >= items.length) {
             Item[] n = (Item[]) new Object[items.length * 2];
-            for (int i = 0; i < items.length; i++) {
+            for (int i = 0; i < size; i++) {
                 n[i] = items[i];
             }
             items = n;
@@ -45,11 +45,11 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
     // remove and return a random item
     public Item dequeue() {
         int n = StdRandom.uniform(size);
-        Item temp = items[size];
-        items[size] = items[n];
-        items[n] = temp;
+        Item temp = items[n];
+        items[n] = items[size-1];
+        items[size-1] = temp;
         size--;
-        if (size <= items.length / 2) {
+        if (size <= items.length / 4 && size > 10) {
             Item[] ni = (Item[]) new Object[items.length / 2];
             for (int i = 0; i < size; i++) {
                 ni[i] = items[i];
@@ -73,6 +73,11 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 
     // unit testing (required)
     public static void main(String[] args) {
+        System.out.println("hello Randomized Queue");
+        RandomizedQueue<Integer> rq = new RandomizedQueue<Integer>();
+        rq.isEmpty();
+        rq.enqueue(33);
+        int i = rq.dequeue();
         System.out.println("hello Randomized Queue");
     }
 

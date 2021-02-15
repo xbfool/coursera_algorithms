@@ -17,7 +17,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 
     // construct an empty randomized queue
     public RandomizedQueue() {
-        items = (Item[]) new Object[10];
+        items = (Item[]) new Object[2];
     }
 
     // is the randomized queue empty?
@@ -32,6 +32,9 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 
     // add the item
     public void enqueue(Item item) {
+        if (item == null) {
+            throw new IllegalArgumentException();
+        }
         if (size >= items.length) {
             Item[] n = (Item[]) new Object[items.length * 2];
             for (int i = 0; i < size; i++) {
@@ -52,7 +55,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         items[n] = items[size-1];
         items[size-1] = temp;
         size--;
-        if (size <= items.length / 4 && size > 10) {
+        if (size <= items.length / 4 && items.length >= 4) {
             Item[] ni = (Item[]) new Object[items.length / 2];
             for (int i = 0; i < size; i++) {
                 ni[i] = items[i];

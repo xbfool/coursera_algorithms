@@ -76,7 +76,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         System.out.println("hello Randomized Queue");
     }
 
-    class RandomizeIterator<T> implements Iterator<T> {
+    private class RandomizeIterator<T> implements Iterator<T> {
         private T[] items;
         private int size;
         private int current;

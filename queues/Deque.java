@@ -113,14 +113,14 @@ public class Deque<Item> implements Iterable<Item> {
         System.out.println("hello deque");
     }
 
-    class Node<T> {
+    private class Node<T> {
         public T item;
         public Node<T> prev;
         public Node<T> next;
     }
 
 
-    class DequeIterator<T> implements Iterator<T> {
+    private class DequeIterator<T> implements Iterator<T> {
         Node<T> current;
 
         // initialize pointer to head of the list for iteration

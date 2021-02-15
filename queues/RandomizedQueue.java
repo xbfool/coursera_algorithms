@@ -4,9 +4,9 @@
  *  Description:
  **************************************************************************** */
 
-import java.util.Iterator;
-import java.util.Objects;
 import edu.princeton.cs.algs4.StdRandom;
+
+import java.util.Iterator;
 
 class RandomizeIterator<T> implements Iterator<T> {
     T [] items;
@@ -14,11 +14,11 @@ class RandomizeIterator<T> implements Iterator<T> {
     int current;
 
     // initialize pointer to head of the list for iteration
-    public RandomizeIterator(RandomizedQueue<T> deque)
+    public RandomizeIterator(T[]items, int size)
     {
-        items = deque.items.clone();
+        this.items = items.clone();
         StdRandom.shuffle(items);
-        size = deque.size;
+        this.size = size;
         current = 0;
     }
 
@@ -46,8 +46,8 @@ class RandomizeIterator<T> implements Iterator<T> {
 
 public class RandomizedQueue<Item> implements Iterable<Item> {
 
-    public Item [] items;
-    public int size = 0;
+    private Item [] items;
+    private int size = 0;
     // construct an empty randomized queue
     public RandomizedQueue(){
         items = (Item[]) new Object[10];
@@ -83,11 +83,11 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         items[n] = temp;
         size--;
         if(size <= items.length / 2){
-            Item[] n = (Item[]) new Object[items.length/2];
+            Item[] ni = (Item[]) new Object[items.length/2];
             for (int i = 0; i < size; i++) {
-                n[i] = items[i];
+                ni[i] = items[i];
             }
-            items = n;
+            items = ni;
         }
 
         return temp;
@@ -101,7 +101,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 
     // return an independent iterator over items in random order
     public Iterator<Item> iterator(){
-        return new RandomizeIterator<Item>(this);
+        return new RandomizeIterator<Item>(this.items,this.size);
     }
 
     // unit testing (required)

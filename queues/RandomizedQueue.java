@@ -7,66 +7,33 @@
 import edu.princeton.cs.algs4.StdRandom;
 
 import java.util.Iterator;
-
-class RandomizeIterator<T> implements Iterator<T> {
-    T [] items;
-    int size;
-    int current;
-
-    // initialize pointer to head of the list for iteration
-    public RandomizeIterator(T[]items, int size)
-    {
-        this.items = items.clone();
-        StdRandom.shuffle(items);
-        this.size = size;
-        current = 0;
-    }
-
-    // returns false if next element does not exist
-    public boolean hasNext()
-    {
-        return current < size;
-    }
-
-    // return current data and update pointer
-    public T next()
-    {
-        T i = items[current];
-        current++;
-        return i;
-    }
-
-    // implement if needed
-    public void remove()
-    {
-        throw new UnsupportedOperationException();
-    }
-}
+import java.util.NoSuchElementException;
 
 
 public class RandomizedQueue<Item> implements Iterable<Item> {
 
-    private Item [] items;
+    private Item[] items;
     private int size = 0;
+
     // construct an empty randomized queue
-    public RandomizedQueue(){
+    public RandomizedQueue() {
         items = (Item[]) new Object[10];
     }
 
     // is the randomized queue empty?
-    public boolean isEmpty(){
+    public boolean isEmpty() {
         return size == 0;
     }
 
     // return the number of items on the randomized queue
-    public int size(){
+    public int size() {
         return size;
     }
 
     // add the item
-    public void enqueue(Item item){
-        if(size >= items.length){
-            Item[] n = (Item[]) new Object[items.length*2];
+    public void enqueue(Item item) {
+        if (size >= items.length) {
+            Item[] n = (Item[]) new Object[items.length * 2];
             for (int i = 0; i < items.length; i++) {
                 n[i] = items[i];
             }
@@ -76,14 +43,14 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
     }
 
     // remove and return a random item
-    public Item dequeue(){
+    public Item dequeue() {
         int n = StdRandom.uniform(size);
         Item temp = items[size];
         items[size] = items[n];
         items[n] = temp;
         size--;
-        if(size <= items.length / 2){
-            Item[] ni = (Item[]) new Object[items.length/2];
+        if (size <= items.length / 2) {
+            Item[] ni = (Item[]) new Object[items.length / 2];
             for (int i = 0; i < size; i++) {
                 ni[i] = items[i];
             }
@@ -94,19 +61,51 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
     }
 
     // return a random item (but do not remove it)
-    public Item sample(){
+    public Item sample() {
         int n = StdRandom.uniform(size);
         return items[n];
     }
 
     // return an independent iterator over items in random order
-    public Iterator<Item> iterator(){
-        return new RandomizeIterator<Item>(this.items,this.size);
+    public Iterator<Item> iterator() {
+        return new RandomizeIterator<Item>(this.items, this.size);
     }
 
     // unit testing (required)
-    public static void main(String[] args){
+    public static void main(String[] args) {
         System.out.println("hello Randomized Queue");
     }
 
+    class RandomizeIterator<T> implements Iterator<T> {
+        private T[] items;
+        private int size;
+        private int current;
+
+        // initialize pointer to head of the list for iteration
+        public RandomizeIterator(T[] items, int size) {
+            this.items = items.clone();
+            StdRandom.shuffle(items);
+            this.size = size;
+            current = 0;
+        }
+
+        // returns false if next element does not exist
+        public boolean hasNext() {
+            return current < size;
+        }
+
+        // return current data and update pointer
+        public T next() {
+            if (current >= size)
+                throw new NoSuchElementException();
+            T i = items[current];
+            current++;
+            return i;
+        }
+
+        // implement if needed
+        public void remove() {
+            throw new UnsupportedOperationException();
+        }
+    }
 }

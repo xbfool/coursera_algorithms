@@ -77,8 +77,8 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
     }
 
     private class RandomizeIterator<T> implements Iterator<T> {
-        private T[] items;
-        private int size;
+        private final T[] items;
+        private final int size;
         private int current;
 
         // initialize pointer to head of the list for iteration

@@ -16,7 +16,7 @@ public class Permutation {
             String s = StdIn.readString();
             q.enqueue(s);
         }
-        for (Iterator<String> iter = q.iterator(); iter.hasNext();){
+        for (Iterator<String> iter = q.iterator(); iter.hasNext(); ) {
             String s = iter.next();
             System.out.println(s);
         }

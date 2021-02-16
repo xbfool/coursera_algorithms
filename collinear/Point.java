@@ -131,6 +131,11 @@ public class Point implements Comparable<Point> {
      */
     public static void main(String[] args) {
         /* YOUR CODE HERE */
+        double l1 = (double)1/0;
+        double l2 = (double)1/0;
+        if(l1 == l2){
+            System.out.println("double can compare");
+        }
     }
 
     class LineComparator implements Comparator<Point>{

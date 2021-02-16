@@ -10,7 +10,14 @@ import java.util.Arrays;
 public class BruteCollinearPoints {
     ArrayList<LineSegment> segments;
     public BruteCollinearPoints(Point[] points){
+        if(points == null)
+            throw new IllegalArgumentException();
         segments = new ArrayList<LineSegment>();
+        for (int i = 0; i < points.length; i++) {
+            if(points[i] == null){
+                throw new IllegalArgumentException();
+            }
+        }
         for (int i = 0; i < points.length - 3; i++) {
             for (int j = i + 1; j < points.length - 2; j++) {
                 for (int k = j + 1; k < points.length - 1; k++) {

@@ -4,15 +4,15 @@
  *  Description:
  **************************************************************************** */
 
-import java.util.ArrayList;
-import java.util.Arrays;
+import edu.princeton.cs.algs4.Queue;
 
+import java.util.Arrays;
 public class BruteCollinearPoints {
-    ArrayList<LineSegment> segments;
+    private Queue<LineSegment> segments;
     public BruteCollinearPoints(Point[] points){
         if(points == null)
             throw new IllegalArgumentException();
-        segments = new ArrayList<LineSegment>();
+        segments = new Queue<LineSegment>();
         for (int i = 0; i < points.length; i++) {
             if(points[i] == null){
                 throw new IllegalArgumentException();
@@ -26,7 +26,7 @@ public class BruteCollinearPoints {
                         Arrays.sort(ps);
                         if( ps[0].slopeTo(ps[1]) == ps[0].slopeTo(ps[2]) && ps[0].slopeTo(ps[1]) == ps[0].slopeTo(ps[2])){
                             LineSegment ls = new LineSegment(ps[0], ps[3]);
-                            segments.add(ls);
+                            segments.enqueue(ls);
                         }
                     }
                 }
@@ -37,7 +37,11 @@ public class BruteCollinearPoints {
         return segments.size();
     }        // the number of line segments
     public LineSegment[] segments(){
-        return (LineSegment[]) segments.toArray();
+        LineSegment[] s = new LineSegment[segments.size()];
+        for (int i = 0; i < segments.size(); i++) {
+            s[i] = segments.dequeue();
+        }
+        return s;
     }
     public static void main(String[] args) {
 

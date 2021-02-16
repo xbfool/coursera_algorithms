@@ -138,7 +138,7 @@ public class Point implements Comparable<Point> {
         }
     }
 
-    class LineComparator implements Comparator<Point>{
+    private class LineComparator implements Comparator<Point>{
         private Point o;
         public LineComparator(Point o){
             this.o = o;

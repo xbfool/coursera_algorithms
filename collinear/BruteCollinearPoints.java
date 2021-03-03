@@ -7,6 +7,9 @@
 import edu.princeton.cs.algs4.Queue;
 
 import java.util.Arrays;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 public class BruteCollinearPoints {
     private Queue<LineSegment> segments;
     public BruteCollinearPoints(Point[] points){
@@ -44,6 +47,16 @@ public class BruteCollinearPoints {
         return s;
     }
     public static void main(String[] args) {
-
+        BufferedReader reader;
+        try {
+            reader = new BufferedReader(new FileReader(args[0]));
+            String line = reader.readLine();
+            while(line != null) {
+                System.out.println(line);
+                line = reader.readLine();
+            }
+        } catch(IOException e){
+            e.printStackTrace();
+        }
     }
 }

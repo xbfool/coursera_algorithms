@@ -30,7 +30,7 @@ public class Board {
             }
             s1 += "\n";
         }
-        return s1
+        return s1;
     }
 
     // board dimension n
@@ -137,7 +137,33 @@ public class Board {
 
     // a board that is obtained by exchanging any pair of tiles
     public Board twin(){
-        return null;
+        int x1 = 0;
+        int y1 = 0;
+        int x2 = 0;
+        int y2 = 0;
+        int found = 0;
+        Board b = new Board(tiles);
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                if(tiles[i][j] != 0){
+                    if(found == 0){
+                        x1 = j;
+                        y1 = i;
+                        found++;
+                    }else{
+                        x2 = j;
+                        y2 = j;
+                        found++;
+                    }
+                }
+            }
+            if(found >= 2){
+                break;
+            }
+        }
+        b.tiles[y1][x1] = tiles[y2][x2];
+        b.tiles[y2][x2] = tiles[y1][x1];
+        return b;
     }
 
     // unit testing (not graded)

@@ -4,6 +4,9 @@
  *  Description: algorithm
  **************************************************************************** */
 
+import edu.princeton.cs.algs4.In;
+import edu.princeton.cs.algs4.StdOut;
+
 import java.util.ArrayList;
 
 public class Board {
@@ -168,6 +171,23 @@ public class Board {
 
     // unit testing (not graded)
     public static void main(String[] args){
+        for (String filename : args) {
 
+            // read in the board specified in the filename
+            In in = new In(filename);
+            int n = in.readInt();
+            int[][] tiles = new int[n][n];
+            for (int i = 0; i < n; i++) {
+                for (int j = 0; j < n; j++) {
+                    tiles[i][j] = in.readInt();
+                }
+            }
+
+            // solve the slider puzzle
+            Board initial = new Board(tiles);
+            //Solver solver = new Solver(initial);
+            StdOut.println(initial.toString());
+            //StdOut.println(filename + ": " + solver.moves());
+        }
     }
 }

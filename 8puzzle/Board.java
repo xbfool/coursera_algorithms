@@ -4,6 +4,8 @@
  *  Description:
  **************************************************************************** */
 
+import java.util.ArrayList;
+
 public class Board {
     private int[][] tiles;
     private int size;
@@ -89,7 +91,48 @@ public class Board {
 
     // all neighboring boards
     public Iterable<Board> neighbors(){
-        return null;
+        ArrayList<Board> ret = new ArrayList<Board>();
+        int x = 0;
+        int y = 0;
+        Boolean found = false;
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                if(tiles[i][j] == 0){
+                    y = i;
+                    x = j;
+                    break;
+                }
+            }
+            if(found){
+                break;
+            }
+        }
+        //up
+        if(y > 0){
+            Board b = new Board(this.tiles);
+            b.tiles[y-1][x] = 0;
+            b.tiles[y][x] = tiles[y-1][x];
+            ret.add(b);
+        }
+        if(y < size - 1){
+            Board b = new Board(this.tiles);
+            b.tiles[y+1][x] = 0;
+            b.tiles[y][x] = tiles[y+1][x];
+            ret.add(b);
+        }
+        if(x > 0){
+            Board b = new Board(this.tiles);
+            b.tiles[y][x-1] = 0;
+            b.tiles[y][x] = tiles[y][x-1];
+            ret.add(b);
+        }
+        if(x < size - 1){
+            Board b = new Board(this.tiles);
+            b.tiles[y][x+1] = 0;
+            b.tiles[y][x] = tiles[y][x+1];
+            ret.add(b);
+        }
+        return ret;
     }
 
     // a board that is obtained by exchanging any pair of tiles

@@ -77,10 +77,9 @@ public class Solver {
         BoardNode ciNode = new BoardNode(c, null, 0);
         minpq.insert(iNode);
         c_minpq.insert(ciNode);
-        Boolean c_has_moves = false;
         //StdOut.println(initial.toString());
         //int i = 0;
-        while (!minpq.isEmpty() && !c_has_moves) {
+        while (!minpq.isEmpty()) {
             BoardNode b = minpq.delMin();
             if (b.board.isGoal() && (b.move < moves || moves == -1)) {
                 solutionBoard = b;
@@ -91,11 +90,12 @@ public class Solver {
                     continue;
                 for (Board tmp : b.board.neighbors()) {
                     BoardNode inode = new BoardNode(tmp, b, b.move + 1);
-                    if (b.parent == null || b.parent.board.equals(tmp))
+                    if (b.parent == null || !b.parent.board.equals(tmp)) {
                         minpq.insert(inode);
+                    }
                 }
             }
-            if (moves >= 0 || !c_has_moves) {
+            if (moves <= 0) {
                 if (c_minpq.isEmpty())
                     continue;
 
@@ -104,8 +104,8 @@ public class Solver {
                     break;
                 else {
                     for (Board tmp : cb.board.neighbors()) {
-                        BoardNode inode = new BoardNode(tmp, b, b.move + 1);
-                        if (cb.parent == null || cb.parent.board.equals(tmp))
+                        BoardNode inode = new BoardNode(tmp, cb, cb.move + 1);
+                        if (cb.parent == null || !cb.parent.board.equals(tmp))
                             c_minpq.insert(inode);
                     }
                 }

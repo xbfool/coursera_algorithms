@@ -12,6 +12,8 @@ import java.util.ArrayList;
 public class Board {
     private int[][] tiles;
     private int size;
+    private int hamming = -1;
+    private int manhattan = -1;
 
     // create a board from an n-by-n array of tiles,
     // where tiles[row][col] = tile at (row, col)
@@ -44,6 +46,8 @@ public class Board {
 
     // number of tiles out of place
     public int hamming() {
+        if (hamming != -1)
+            return hamming;
         int x = 0;
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
@@ -52,11 +56,15 @@ public class Board {
                 }
             }
         }
-        return x;
+        hamming = x;
+        return hamming;
     }
 
     // sum of Manhattan distances between tiles and goal
     public int manhattan() {
+        if (manhattan != -1) {
+            return manhattan;
+        }
         int x = 0;
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
@@ -68,7 +76,8 @@ public class Board {
                 x += Math.abs(tmi - i) + Math.abs(tmj - j);
             }
         }
-        return x;
+        manhattan = x;
+        return manhattan;
     }
 
     // is this board the goal board?

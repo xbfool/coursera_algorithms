@@ -55,7 +55,12 @@ class ManhattanComparator
             return 1;
         }
         else {
-            return 0;
+            if (node1.board.manhattan() < node2.board.manhattan())
+                return 1;
+            else if (node1.board.manhattan() > node2.board.manhattan())
+                return -1;
+            else
+                return 0;
         }
     }
 }
@@ -81,13 +86,13 @@ public class Solver {
         //int i = 0;
         while (!minpq.isEmpty()) {
             BoardNode b = minpq.delMin();
+            if (b.move >= moves && moves > 0)
+                continue;
             if (b.board.isGoal() && (b.move < moves || moves == -1)) {
                 solutionBoard = b;
                 moves = b.move;
             }
             else {
-                if (b.move > moves && moves > 0)
-                    continue;
                 for (Board tmp : b.board.neighbors()) {
                     BoardNode inode = new BoardNode(tmp, b, b.move + 1);
                     if (b.parent == null || !b.parent.board.equals(tmp)) {
@@ -95,7 +100,7 @@ public class Solver {
                     }
                 }
             }
-            if (moves <= 0) {
+            if (moves < 0) {
                 if (c_minpq.isEmpty())
                     continue;
 
@@ -116,7 +121,7 @@ public class Solver {
 
     // is the initial board solvable? (see below)
     public boolean isSolvable() {
-        return moves() == -1;
+        return moves() != -1;
     }
 
     // min number of moves to solve initial board; -1 if unsolvable
@@ -159,6 +164,7 @@ public class Solver {
             //   StdOut.println(initial.hamming());
             //   StdOut.println(initial.manhattan());
             //   StdOut.println(initial.isGoal());
+            StdOut.println(solver.isSolvable());
             StdOut.println(filename + ": " + solver.moves());
         }
     }

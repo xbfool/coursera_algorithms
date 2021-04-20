@@ -91,20 +91,22 @@ public class Solver {
                     continue;
                 for (Board tmp : b.board.neighbors()) {
                     BoardNode inode = new BoardNode(tmp, b, b.move + 1);
-                    minpq.insert(inode);
+                    if (b.parent == null || b.parent.board.equals(tmp))
+                        minpq.insert(inode);
                 }
             }
             if (moves >= 0 || !c_has_moves) {
                 if (c_minpq.isEmpty())
                     continue;
-                
+
                 BoardNode cb = c_minpq.delMin();
                 if (cb.board.isGoal())
                     break;
                 else {
                     for (Board tmp : cb.board.neighbors()) {
                         BoardNode inode = new BoardNode(tmp, b, b.move + 1);
-                        c_minpq.insert(inode);
+                        if (cb.parent == null || cb.parent.board.equals(tmp))
+                            c_minpq.insert(inode);
                     }
                 }
             }

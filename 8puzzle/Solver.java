@@ -20,6 +20,7 @@ class BoardNode {
     public Board board;
     public int move;
     public BoardNode parent;
+
 }
 
 
@@ -61,29 +62,54 @@ class ManhattanComparator
 
 
 public class Solver {
-    Board initial;
-    MinPQ<BoardNode> minpq;
-    int moves = -1;
-    BoardNode solutionBoard = null;
+    private Board initial;
+    private MinPQ<BoardNode> minpq;
+    private int moves = -1;
+    private BoardNode solutionBoard = null;
 
     // find a solution to the initial board (using the A* algorithm)
     public Solver(Board initial) {
         this.initial = initial;
-        minpq = new MinPQ<BoardNode>();
-        minpq.insert(new BoardNode(initial, null, 0));
-        while (!minpq.isEmpty()) {
+        Board c = initial.twin();
+        minpq = new MinPQ<BoardNode>(new ManhattanComparator());
+        MinPQ<BoardNode> c_minpq = new MinPQ<BoardNode>(new ManhattanComparator());
+        BoardNode iNode = new BoardNode(initial, null, 0);
+        BoardNode ciNode = new BoardNode(c, null, 0);
+        minpq.insert(iNode);
+        c_minpq.insert(ciNode);
+        Boolean c_has_moves = false;
+        //StdOut.println(initial.toString());
+        //int i = 0;
+        while (!minpq.isEmpty() && !c_has_moves) {
             BoardNode b = minpq.delMin();
-            if (b.board.hamming() == 0) {
+            if (b.board.isGoal() && (b.move < moves || moves == -1)) {
                 solutionBoard = b;
                 moves = b.move;
             }
             else {
+                if (b.move > moves && moves > 0)
+                    continue;
                 for (Board tmp : b.board.neighbors()) {
-                    if (b.parent != null && !b.parent.board.equals(tmp))
-                        minpq.insert(new BoardNode(tmp, b, b.move + 1));
+                    BoardNode inode = new BoardNode(tmp, b, b.move + 1);
+                    minpq.insert(inode);
+                }
+            }
+            if (moves >= 0 || !c_has_moves) {
+                if (c_minpq.isEmpty())
+                    continue;
+                
+                BoardNode cb = c_minpq.delMin();
+                if (cb.board.isGoal())
+                    break;
+                else {
+                    for (Board tmp : cb.board.neighbors()) {
+                        BoardNode inode = new BoardNode(tmp, b, b.move + 1);
+                        c_minpq.insert(inode);
+                    }
                 }
             }
         }
+
     }
 
     // is the initial board solvable? (see below)
@@ -126,11 +152,11 @@ public class Solver {
             // solve the slider puzzle
             Board initial = new Board(tiles);
             Solver solver = new Solver(initial);
-            StdOut.println(initial.toString());
-            StdOut.println(initial.dimension());
-            StdOut.println(initial.hamming());
-            StdOut.println(initial.manhattan());
-            StdOut.println(initial.isGoal());
+            //   StdOut.println(initial.toString());
+            //   StdOut.println(initial.dimension());
+            //   StdOut.println(initial.hamming());
+            //   StdOut.println(initial.manhattan());
+            //   StdOut.println(initial.isGoal());
             StdOut.println(filename + ": " + solver.moves());
         }
     }

@@ -85,6 +85,7 @@ public class Board {
         return hamming() == 0;
     }
 
+
     // does this board equal y?
     public boolean equals(Object y) {
         Board yy = (Board) y;
@@ -100,7 +101,7 @@ public class Board {
                 }
             }
         }
-        return false;
+        return true;
     }
 
     // all neighboring boards
@@ -160,6 +161,9 @@ public class Board {
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
                 if (tiles[i][j] != 0) {
+                    if (found >= 2) {
+                        break;
+                    }
                     if (found == 0) {
                         x1 = j;
                         y1 = i;
@@ -167,14 +171,13 @@ public class Board {
                     }
                     else {
                         x2 = j;
-                        y2 = j;
+                        y2 = i;
                         found++;
                     }
                 }
+
             }
-            if (found >= 2) {
-                break;
-            }
+
         }
         b.tiles[y1][x1] = tiles[y2][x2];
         b.tiles[y2][x2] = tiles[y1][x1];
@@ -203,6 +206,7 @@ public class Board {
             StdOut.println(initial.hamming());
             StdOut.println(initial.manhattan());
             StdOut.println(initial.isGoal());
+            StdOut.println(initial.twin().toString());
             //StdOut.println(filename + ": " + solver.moves());
         }
     }

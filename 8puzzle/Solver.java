@@ -15,11 +15,15 @@ class BoardNode {
         this.board = board;
         this.parent = parent;
         this.move = move;
+        this.manhattan = board.manhattan();
+        this.value = this.manhattan + move;
     }
 
     public Board board;
     public int move;
     public BoardNode parent;
+    public int value;
+    public int manhattan;
 
 }
 
@@ -48,23 +52,45 @@ class ManhattanComparator
     @Override
     public int compare(BoardNode node1,
                        BoardNode node2) {
-        if (node1.move + node1.board.manhattan() < node2.move + node2.board.manhattan()) {
+        if (node1.value < node2.value) {
             return -1;
         }
-        else if (node1.move + node1.board.manhattan() > node2.move + node2.board.manhattan()) {
+        else if (node1.value > node2.value) {
             return 1;
         }
         else {
-            if (node1.board.manhattan() < node2.board.manhattan())
-                return 1;
-            else if (node1.board.manhattan() > node2.board.manhattan())
+            if (node1.manhattan < node2.manhattan)
                 return -1;
+            else if (node1.manhattan > node2.manhattan)
+                return 1;
             else
                 return 0;
         }
     }
 }
 
+class ManhattanComparator1
+        implements Comparator<BoardNode> {
+
+    @Override
+    public int compare(BoardNode node1,
+                       BoardNode node2) {
+        if (node1.move < node2.move) {
+            return -1;
+        }
+        else if (node1.move > node2.move) {
+            return 1;
+        }
+        else {
+            if (node1.value < node2.value)
+                return -1;
+            else if (node1.value > node2.value)
+                return 1;
+            else
+                return 0;
+        }
+    }
+}
 
 public class Solver {
     private Board initial;
@@ -91,11 +117,14 @@ public class Solver {
             if (b.board.isGoal() && (b.move < moves || moves == -1)) {
                 solutionBoard = b;
                 moves = b.move;
+                break;
             }
             else {
+                if (b.move + 1 >= moves && moves > 0)
+                    continue;
                 for (Board tmp : b.board.neighbors()) {
-                    BoardNode inode = new BoardNode(tmp, b, b.move + 1);
                     if (b.parent == null || !b.parent.board.equals(tmp)) {
+                        BoardNode inode = new BoardNode(tmp, b, b.move + 1);
                         minpq.insert(inode);
                     }
                 }
@@ -109,9 +138,12 @@ public class Solver {
                     break;
                 else {
                     for (Board tmp : cb.board.neighbors()) {
-                        BoardNode inode = new BoardNode(tmp, cb, cb.move + 1);
-                        if (cb.parent == null || !cb.parent.board.equals(tmp))
+
+                        if (cb.parent == null || !cb.parent.board.equals(tmp)) {
+                            BoardNode inode = new BoardNode(tmp, cb, cb.move + 1);
                             c_minpq.insert(inode);
+                        }
+
                     }
                 }
             }

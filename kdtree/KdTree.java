@@ -52,12 +52,23 @@ public class KdTree {
 
     public void insert(
             Point2D p) {
+        if (p == null)
+            throw new IllegalArgumentException();
         Node r = root;
-        while (r != null)
+        if (r == null) {
+            root = new Node(p, null, null, 0);
+            size = size + 1;
+            return;
+        }
+        while (r != null) {
+            if (r.point.equals(p)) {
+                return;
+            }
             if (r.depth % 2 == 0) {
                 if (p.x() > r.point.x()) {
                     if (r.right == null) {
                         r.right = new Node(p, null, null, r.depth + 1);
+                        size = size + 1;
                         break;
                     }
                     else {
@@ -67,6 +78,7 @@ public class KdTree {
                 else {
                     if (r.left == null) {
                         r.left = new Node(p, null, null, r.depth + 1);
+                        size = size + 1;
                         break;
                     }
                     else {
@@ -78,6 +90,7 @@ public class KdTree {
                 if (p.y() > r.point.y()) {
                     if (r.right == null) {
                         r.right = new Node(p, null, null, r.depth + 1);
+                        size = size + 1;
                         break;
                     }
                     else {
@@ -87,6 +100,7 @@ public class KdTree {
                 else {
                     if (r.left == null) {
                         r.left = new Node(p, null, null, r.depth + 1);
+                        size = size + 1;
                         break;
                     }
                     else {
@@ -95,9 +109,13 @@ public class KdTree {
                 }
             }
 
+        }
+
     }            // add the point to the set (if it is not already in the set)
 
     public boolean contains(Point2D p) {
+        if (p == null)
+            throw new IllegalArgumentException();
         Node r = root;
         while (r != null) {
             if (r.point.equals(p)) {
@@ -132,6 +150,8 @@ public class KdTree {
 
     private Iterable<Point2D> rec_range(RectHV rect, Node root) {
         ArrayList l = new ArrayList<Point2D>();
+        if (root == null)
+            return l;
         if (rect.contains(root.point))
             l.add(root.point);
         if (root.depth % 2 == 0) {

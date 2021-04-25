@@ -74,7 +74,7 @@ public class PointSET {
             Double distance = p.distanceTo(t);
             if (distance < distant) {
                 distant = distance;
-                ret = p;
+                ret = t;
             }
         }
         return ret;

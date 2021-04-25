@@ -170,7 +170,9 @@ public class KdTree {
         return rec_range(rect, root);
     }          // all points that are inside the rectangle (or on the boundary)
 
-    public Point2D nearest(Point2D p)
+    public Point2D nearest(Point2D p) {
+        return null;
+    }
 
     public static void main(String[] args) {
 
